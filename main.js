@@ -44,6 +44,7 @@ alpha.forEach((element)=>{
 })
 let globalOperationCount=0
 let globalPreviousOperator=false
+let dotcount=0
 function filldisplay(sign){
     const display=document.querySelector(".display")
     display.textContent=`${display.textContent}${sign}`
@@ -54,12 +55,23 @@ function cleardisplay(){
 }
 function updatedisplay(sign){
     if ("1234567890.".includes(sign)){
+        console.log(sign==".")
+        console.log(globalPreviousOperator)
+        if(sign=="."){
+            if (dotcount==1){
+                return
+            }
+            else{
+                dotcount+=1
+            }
+        }
         if (globalPreviousOperator==false){
             cleardisplay()
         }
         filldisplay(sign)
         globalPreviousOperator=false
     } else if ("+-/*".includes(sign)){
+        dotcount=0
         if ((globalOperationCount==0) ||(globalPreviousOperator==true)){
             filldisplay(` ${sign} `)
             globalOperationCount+=1
@@ -70,11 +82,13 @@ function updatedisplay(sign){
             globalPreviousOperator=true
         }
     } else if (sign=="="){
+        dotcount=0
         calculate()
         globalOperationCount=0
         globalPreviousOperator=false
     } else{
         cleardisplay()
+        dotcount=0
         globalOperationCount=0
         globalPreviousOperator=false
     }
