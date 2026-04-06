@@ -21,6 +21,7 @@ function operate(number1,operation,number2){
         return Number(multiply(number1,number2).toFixed(4))
     } else if (operation=="/"){
         if (number2==0){
+            globalError=true
             return "How do you not know to not divide by zero!!!!"
         }
         return Number(divide(number1,number2).toFixed(4))
@@ -44,6 +45,8 @@ alpha.forEach((element)=>{
 })
 let globalOperationCount=0
 let globalPreviousOperator=false
+let globalJustCalculated=false
+let globalError=false
 let dotcount=0
 function filldisplay(sign){
     const display=document.querySelector(".display")
@@ -54,9 +57,15 @@ function cleardisplay(){
     display.textContent=""
 }
 function updatedisplay(sign){
+    if (globalError==true){
+        cleardisplay()
+        globalError=false
+    }
     if ("1234567890.".includes(sign)){
-        console.log(sign==".")
-        console.log(globalPreviousOperator)
+        if(globalJustCalculated==true){
+            cleardisplay()
+            globalJustCalculated=false
+        }
         if(sign=="."){
             if (dotcount==1){
                 return
@@ -65,32 +74,31 @@ function updatedisplay(sign){
                 dotcount+=1
             }
         }
-        if (globalPreviousOperator==false){
-            cleardisplay()
-        }
-        filldisplay(sign)
         globalPreviousOperator=false
+        filldisplay(sign)
     } else if ("+-/*".includes(sign)){
+        globalJustCalculated=false
         dotcount=0
-        if ((globalOperationCount==0) ||(globalPreviousOperator==true)){
+        if ((globalOperationCount==0)||(globalPreviousOperator==true)){
             filldisplay(` ${sign} `)
             globalOperationCount+=1
-            globalPreviousOperator=true
         } else {
             calculate()
             filldisplay(` ${sign} `)
-            globalPreviousOperator=true
         }
+        globalPreviousOperator=true
     } else if (sign=="="){
         dotcount=0
         calculate()
         globalOperationCount=0
         globalPreviousOperator=false
+        globalJustCalculated=true
     } else{
         cleardisplay()
         dotcount=0
         globalOperationCount=0
         globalPreviousOperator=false
+        globalJustCalculated=false
     }
 }
 function calculate(){
@@ -99,9 +107,11 @@ function calculate(){
     const array=equation.split(" ")
     results=operate(array.at(0),array.at(-2),array.at(-1))
     console.log(results)
+    console.log(array)
     cleardisplay()
-    if (Number.isNaN(results)==true){
+    if ((Number.isNaN(results)==true)||(results===undefined)){
         filldisplay("Error")
+        globalError=true
     } else{
     filldisplay(results)
     }
