@@ -27,18 +27,20 @@ function operate(number1,operation,number2){
         return Number(divide(number1,number2).toFixed(4))
     }
 }
-let alpha="1234567890+-*/.=".split("")
+let alpha="789/456*123-=0.+".split("")
 alpha.push("clear")
 const container=document.querySelector(".container")
-alpha.forEach((element)=>{
+let horibox
+alpha.forEach((element,index)=>{
     const button=document.createElement("button")
+    if ((index%4==0)&&(index<=16)){
+        horibox=document.createElement("div")
+        horibox.classList.add("HoriBox")
+        container.appendChild(horibox)
+    }
     button.classList.add("but")
     button.textContent= `${element}`
-    button.style.display="inline-block"
-    button.style.width="100px"
-    button.style.aspectRatio="1/1"
-    button.style.backgroundColor="green"
-    container.appendChild(button)
+    horibox.appendChild(button)
     button.addEventListener("click",()=>{
         updatedisplay(element)
     })
@@ -93,7 +95,7 @@ function updatedisplay(sign){
         globalOperationCount=0
         globalPreviousOperator=false
         globalJustCalculated=true
-    } else{
+    } else if (sign=="clear"){
         cleardisplay()
         dotcount=0
         globalOperationCount=0

@@ -2,12 +2,42 @@ body{
     display:flex;
     flex-direction:column;
     align-items:center;
+    background-color:black
 }
 .display{
+    font-family: 'Digital-7', 'Orbitron', monospace;
     margin-top:10px;
     margin-bottom:30px;
     padding:0px;
-    width:500px;
-    height:100px;
-    background-color:aquamarine;
+    width:800px;
+    height:120px;
+    background-color:orange;
+    font-size:80px;
+    text-align:center;
+    border-radius:80px;
+    line-height:120px;
+}
+.container{
+    width:900px;
+    background-color:black;
+    color:white;
+}
+.HoriBox{
+    margin:20px;
+    border:10px;
+    height:120px;
+    border-color:black;
+    background-color:black;
+    flex-wrap:wrap;
+    display:flex;
+    justify-content:space-around;
+    gap:20px;
+}
+.but{
+    background-color:orange;
+    width:100px;
+    color:white;
+    font-size:50px;
+    flex:1 1 auto;
+    border-radius: 80px;
 }
